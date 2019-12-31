@@ -21,9 +21,6 @@
 package com.virtualdogbert.artefact
 
 import groovy.transform.CompileStatic
-import io.micronaut.context.annotation.Context
-import io.micronaut.context.annotation.Prototype
-import io.micronaut.runtime.context.scope.ThreadLocal
 import jdk.internal.org.objectweb.asm.Opcodes
 import org.codehaus.groovy.ast.*
 import org.codehaus.groovy.ast.expr.*
@@ -32,7 +29,6 @@ import org.codehaus.groovy.ast.stmt.ExpressionStatement
 import org.codehaus.groovy.syntax.Token
 import org.codehaus.groovy.syntax.Types
 
-import javax.inject.Singleton
 import java.util.regex.Pattern
 
 /**
@@ -44,7 +40,7 @@ trait AstTrait {
     static       ConfigObject config              = null
     static       ConfigObject urlMapping          = null
     static       boolean      setupConfig         = true
-    static final List<String> beanAnnotationNames = [Singleton.name, Context.name, Prototype.name, ThreadLocal.name]
+//    static final List<String> beanAnnotationNames = [Singleton.name, Prototype.name, ThreadLocal.name]
 
     /**
      * Gets the conventions configurations for the library. This is called by the library itself, but also through CompileStatic extensions..
@@ -182,7 +178,7 @@ trait AstTrait {
                 }
             }
 
-            ConstructorNode constructorNode = new ConstructorNode(Opcodes.ACC_PUBLIC, services.toArray(new Parameter[services.size()]), [] as ClassNode[], constructor)
+            ConstructorNode constructorNode = new ConstructorNode(Opcodes.ACC_PUBLIC, services.toArray(new Parameter[services.size()]) as Parameter[], [] as ClassNode[], constructor)
 
             // Add injection constructor
             classNode.addConstructor(constructorNode)

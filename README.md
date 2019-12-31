@@ -208,3 +208,9 @@ but no simpler.
   * Add the ability to add artefacts using the conventions config.
   * Write cli/gradle tasks for generating artefacts.
   * Update documentation and add asciidoc
+
+## For Sealights
+This project should have 4% of coverage for the following methods:
+* com.virtualdogbert.artefact.AstTrait#public static boolean hasAnnotation(Class, ClassNode, List)
+* com.virtualdogbert.artefact.AstTrait$Closures#phasAnnotation#closure (String)
+* com.virtualdogbert.artefact.ControllerArtefactHandler#public static boolean isArtefact(ClassNode, String, ConfigObject)

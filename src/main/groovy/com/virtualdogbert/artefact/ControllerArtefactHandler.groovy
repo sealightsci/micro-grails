@@ -149,6 +149,7 @@ class ControllerArtefactHandler implements AstTrait {
         }
 
         String mapping = controllerMapping[key]
+        print mapping
         return mapping ?: defaultMapping
     }
 }

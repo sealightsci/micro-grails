@@ -1,3 +1,11 @@
+buildscript{
+    repositories {
+        mavenCentral()
+        dependencies {
+            classpath 'io.sealights.on-premise.agents.plugin:sealights-gradle-plugin:latest.release'
+        }
+    }
+}
 plugins {
     // Apply the groovy plugin to add support for Groovy
     id 'groovy'
@@ -47,10 +55,15 @@ dependencies {
     compileOnly "io.micronaut:micronaut-http-server-netty"
     compileOnly "io.micronaut:micronaut-runtime-groovy"
     compileOnly "io.micronaut:micronaut-inject-groovy"
+    compile "javax.inject:javax.inject:1"
 
     //tag::gorm[]
     compileOnly "io.micronaut.configuration:micronaut-hibernate-validator"
     compileOnly "io.micronaut.configuration:micronaut-hibernate-gorm"
+    compileOnly "io.micronaut:micronaut-runtime:1.2.2"
+    compile "io.micronaut:micronaut-http:1.2.2"
+    compileOnly "io.micronaut:micronaut-core:1.2.2"
+    compileOnly "io.micronaut:inject:1.0.0.RC2"
     compileOnly "org.grails:grails-datastore-gorm-hibernate5:$gormVersion"
 
       //end::gorm[]
@@ -63,8 +76,20 @@ dependencies {
             'junit:junit:4.12',
             'org.codehaus.groovy:groovy-all:2.5.1',
     )
+    testImplementation(
+            'junit:junit:4.12',
+            'org.junit.jupiter:junit-jupiter-api:5.4.2'
+    )
+    testRuntime(
+            'org.junit.jupiter:junit-jupiter-engine:5.4.2',
+            'org.junit.vintage:junit-vintage-engine:5.4.2'
+    )
 
 
+}
+
+test {
+    useJUnitPlatform()
 }
 
 task sourceJar(type: Jar) {
@@ -218,5 +243,34 @@ task docs(dependsOn: [asciidoc]) {
         from 'src/docs'
         into new File(buildDir, 'docs').path
         include '**/*.png'
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
+allprojects { p ->
+    apply plugin: 'io.sealights.on-premise.agents.plugin.sealights-gradle-plugin'
+    sealights {
+            token = System.getenv('SL_TOKEN')
+        createBuildSessionId = false
+          buildSessionId = System.getenv('SL_BUILD_SESSION_ID')
+
+        filesStorage="/tmp"
+        includeResources=true
+//        buildScannerJar = "c:\\java-biuild-agent\\without-enrich.jar"
+        logEnabled = false
+        logLevel = "off"
+        logToFile = false
+        logToConsole = true
+
+//          runTestOnly=true
+          testTasks=["test", "junitPlatformTest", "integrationTest"]
+//          filesIncluded="*sample*"
+//          filesExcluded="*sample*"
+//        proxy = "http://localhost:8888"
+          sealightsJvmParams=["sl.enableUpgrade":"false"]
+        buildScannerParams=["sourcePath":"src/main/groovy"]
+//          testListenerJvmParams=["sl.param1":"true","sl.param2":"value"]
     }
 }

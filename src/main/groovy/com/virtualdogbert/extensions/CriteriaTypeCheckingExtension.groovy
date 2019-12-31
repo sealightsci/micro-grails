@@ -39,6 +39,7 @@ class CriteriaTypeCheckingExtension extends TypeCheckingDSL {
         finish { scopeExit() }
 
         methodNotFound { ClassNode receiver, String name, ArgumentListExpression argList, ClassNode[] argTypes, MethodCall call ->
+            print "hdakjhjka"
             def dynamicCall
             if(currentScope.processingCriteriaClosure) {
                 dynamicCall = makeDynamic (call)
@@ -47,6 +48,7 @@ class CriteriaTypeCheckingExtension extends TypeCheckingDSL {
         }
 
         afterMethodCall { MethodCall call ->
+            print "hdakjhjka"
             if(isCriteriaCall(call)) {
                 scopeExit()
             }

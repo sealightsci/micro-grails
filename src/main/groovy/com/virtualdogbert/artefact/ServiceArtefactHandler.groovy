@@ -64,7 +64,7 @@ class ServiceArtefactHandler implements AstTrait {
         //Inject Services
         addServiceInjection(classNode, config)
 
-        addAnnotation(classNode, Singleton, getBeanAnnotationNames())
+//        addAnnotation(classNode, Singleton)
 
         if (config.transactional && !((List<String>) config.transactionalExcludes).contains("${classNode.packageName}.$classNode.nameWithoutPackage".toString())) {
             addAnnotation(classNode, Transactional, [Transactional.name, NotTransactional.name])
